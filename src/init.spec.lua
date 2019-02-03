@@ -109,4 +109,79 @@ return function()
 
 		lens:unmount()
 	end)
+
+	it("should work with FirstChildByName", function()
+		local folder = Instance.new("Folder")
+		local child = Instance.new("StringValue")
+		child.Name = "ChildName"
+		child.Value = "foo"
+		child.Parent = folder
+
+		local lens = Lenses.FirstChildByName.new({
+			instance = folder,
+			name = "ChildName",
+		}, function(child)
+			return Lenses.GetProperty.new({
+				instance = child,
+				key = "Value",
+			})
+		end)
+		lens:mount()
+
+		local result = lens:getValue()
+
+		expect(result).to.equal("foo")
+
+		lens:unmount()
+	end)
+
+	it("should handle the tag editor format", function()
+		local tags = Instance.new("Folder")
+		tags.Name = "TagList"
+
+		local door = Instance.new("Folder")
+		door.Name = "Door"
+
+		local doorIcon = Instance.new("StringValue")
+		doorIcon.Name = "Icon"
+		doorIcon.Value = "door"
+		doorIcon.Parent = door
+
+		door.Parent = tags
+
+		local computer = Instance.new("Folder")
+		computer.Name = "Computer"
+		computer.Parent = tags
+
+		tags.Parent = game:GetService("ReplicatedStorage")
+
+		local lens = Lenses.FirstChildByName.new({
+			instance = game:GetService("ReplicatedStorage"),
+			name = "TagList",
+		}, function(tagList)
+			return Lenses.GetChildMap.new({
+				instance = tagList,
+			}, function(tag)
+				return Lenses.GetChildMap.new({
+					instance = tag,
+				}, function(prop)
+					return Lenses.GetProperty.new({
+						instance = prop,
+						key = "Value",
+					})
+				end)
+			end)
+		end)
+		lens:mount()
+
+		local result = lens:getValue()
+
+		expect(result).to.be.a("table")
+		expect(result.Door).to.be.a("table")
+		expect(result.Door.Icon).to.be.equal("door")
+		expect(result.Computer).to.be.a("table")
+
+		lens:unmount()
+		tags:Destroy()
+	end)
 end
