@@ -3,6 +3,9 @@
 **This is a prototype, and is not intended to be production ready. Use
 at your own risk!**
 
+[![Build Status](https://travis-ci.org/tiffany352/roblox-lenses.svg?branch=master)](https://travis-ci.org/tiffany352/roblox-lenses)
+[![Coverage Status](https://coveralls.io/repos/github/tiffany352/roblox-lenses/badge.svg?branch=master)](https://coveralls.io/github/tiffany352/roblox-lenses?branch=master)
+
 This is a library for easily defining mappings from a DataModel
 hierarchy, into a table shaped however you like. You can think of it
 like GraphQL or like the inverse of Roact/React.
