@@ -10,12 +10,13 @@ function GetProperty:didMount()
 	local key = self.props.key
 
 	self.innerValue = self.continuation(instance[key])
-	mount(self.innerValue)
+	mount(self.innerValue, self.onValueChange)
 
 	self.changed = instance:GetPropertyChangedSignal(key):Connect(function()
 		unmount(self.innerValue)
 		self.innerValue = self.continuation(instance[key])
-		mount(self.innerValue)
+		mount(self.innerValue, self.onValueChange)
+		self:update()
 	end)
 end
 
@@ -27,3 +28,5 @@ end
 function GetProperty:render()
 	return getValue(self.innerValue)
 end
+
+return GetProperty

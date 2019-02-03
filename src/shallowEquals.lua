@@ -13,6 +13,9 @@ local function shallowEquals(left, right)
 			if value ~= 2 then
 				return false
 			end
+			if left[key] ~= right[key] then
+				return false
+			end
 		end
 
 		return true

@@ -10,13 +10,12 @@ function GetChildren:didMount()
 
 	for _,child in pairs(self.props.instance:GetChildren()) do
 		self.children[child] = self.continuation(child)
-		self:childAdded(child)
 	end
-	mount(self.children)
+	mount(self.children, self.onValueChange)
 
 	self.childAdded = self.props.instance.ChildAdded:Connect(function(child)
 		self.children[child] = self.continuation(child)
-		mount(self.children[child])
+		mount(self.children[child], self.onValueChange)
 		self:update()
 	end)
 	self.childRemoved = self.props.instance.ChildRemoved:Connect(function(child)
@@ -40,3 +39,5 @@ function GetChildren:render()
 
 	return result
 end
+
+return GetChildren
