@@ -16,7 +16,7 @@ function Component:extend(name)
 			value = nil,
 			valueChanged = nil,
 			props = props,
-			continuation = continuation,
+			continuation = continuation or function(value) return value end,
 		}
 		setmetatable(self, class)
 
