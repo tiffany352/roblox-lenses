@@ -41,3 +41,25 @@ lens.valueChanged = function()
     -- do stuff
 end
 ```
+
+If there's a DM hierarchy that looks like this:
+
+```
+ReplicatedStorage (ReplicatedStorage)
+`- TagList (Folder)
+   `- Foo (Folder)
+      `- Bar (StringValue)
+         `- Value: Baz
+```
+
+Then `result` will contain:
+
+```
+{
+    Foo = {
+        Bar = "Baz",
+    }
+}
+```
+
+Any time the DM updates, `result` should be updated to reflect the changes. If it ever gets out of sync, that'd be a bug in `roblox-lenses`.
